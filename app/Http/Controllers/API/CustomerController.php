@@ -24,9 +24,23 @@ class CustomerController extends BaseController{
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request){
+        $validator = Validator::make($request, [
+            'name' => ['bail','required','string','min:5','unique:customers,name'],
+            'email' => ['bail','nulable','email','unique:customers,email'],
+            'phone' => ['bail','nullable','numeric','digits_between:10,11'],
+            'birthday' => ['nullable','date'],
+        ]);
+        if($validator->fails()){
+            return $this->sendError($validator->errors());       
+        }
+        $customer = new Customer();
+        $customer->name = $request->name;
+        $customer->email = $request->email;
+        $customer->phone = $request->phone;
+        $customer->birthday = $request->birthday;
+        $customer->save();
+        return $this->sendResponse(new CustomerResource($customer), 'Customer created.');
     }
 
     /**
