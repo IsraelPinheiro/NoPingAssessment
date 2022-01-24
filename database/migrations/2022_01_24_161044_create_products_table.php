@@ -12,17 +12,15 @@ class CreateProductsTable extends Migration{
      */
     public function up(){
         Schema::create('products', function (Blueprint $table){
-            Schema::create('products', function (Blueprint $table){
-                $table->id();
-                $table->string('name')->unique();
-                $table->string('sku')->unique();
-                $table->text('description')->nullable()->default(null);
-                $table->integer('in_stock')->unsigned()->default(0);
-                $table->bigInteger('supplier_id')->unsigned();
-                $table->decimal('price', 8, 2)->unsigned()->default(0);
-                $table->timestamps();   //created_at and updated_at
-                $table->softDeletes();  //deleted_at
-            });
+            $table->id();
+            $table->string('name')->unique();
+            $table->string('sku')->unique();
+            $table->text('description')->nullable()->default(null);
+            $table->integer('in_stock')->unsigned()->default(0);
+            $table->bigInteger('supplier_id')->unsigned();
+            $table->decimal('price', 8, 2)->unsigned()->default(0);
+            $table->timestamps();   //created_at and updated_at
+            $table->softDeletes();  //deleted_at
         });
     }
 
