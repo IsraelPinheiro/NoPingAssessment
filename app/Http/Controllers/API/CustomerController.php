@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Resources\Customer as CustomerResource;
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends BaseController{
     /**
@@ -11,9 +13,9 @@ class CustomerController extends BaseController{
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index(){
+        $customers = Customer::all();
+        return $this->sendResponse(CustomerResource::collection($customers), 'Posts fetched.');
     }
 
     /**
