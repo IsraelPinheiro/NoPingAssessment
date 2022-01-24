@@ -53,9 +53,8 @@ class ProductController extends BaseController{
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
-    {
-        //
+    public function show(Product $product){
+        return $this->sendResponse(new ProductResource($product), 'Product fetched.');
     }
 
     /**
