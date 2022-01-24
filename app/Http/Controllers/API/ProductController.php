@@ -64,9 +64,26 @@ class ProductController extends BaseController{
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
-    {
-        //
+    public function update(Request $request, Product $product){
+        $validator = Validator::make($request, [
+            'name' => ['required','string','min:5','unique:products,name,'.$product->id],
+            'sku' => ['required','string','min:5','unique:products,sku,'.$product->id],
+            'description' => ['nullable','string'],
+            'in_stock' => ['nullable','numeric', 'gte:0'],
+            'supplier_id' => ['nullable','numeric', 'gt:0'],
+            'price' => ['nullable','numeric', 'gte:0'],
+        ]);
+        if($validator->fails()){
+            return $this->sendError($validator->errors());       
+        }
+        $product->name = $request->name;
+        $product->sku = $request->sku;
+        $product->description = $request->description;
+        $product->in_stock = $request->in_stock ? $request->in_stock : $product->in_stock;
+        $product->supplier_id = $request->supplier_id ? $request->supplier_id : $product->supplier_id;
+        $product->price = $request->price ? $request->price : $product->price;
+        $product->save();
+        return $this->sendResponse(new ProductResource($product), 'Product created.');
     }
 
     /**
@@ -75,8 +92,8 @@ class ProductController extends BaseController{
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
-    {
-        //
+    public function destroy(Product $product){
+        $product->delete();
+        return $this->sendResponse([], 'Product deleted.');
     }
 }
