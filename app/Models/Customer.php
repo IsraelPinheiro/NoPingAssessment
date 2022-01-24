@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Customer extends Model{
     use HasFactory, SoftDeletes;
+
+    //Relationships
+    //Customer's Purchases
+    public function purchases(){
+        return $this->hasMany(Sale::class);
+    }
 }
