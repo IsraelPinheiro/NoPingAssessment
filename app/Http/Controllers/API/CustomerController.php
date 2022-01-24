@@ -15,7 +15,7 @@ class CustomerController extends BaseController{
      */
     public function index(){
         $customers = Customer::all();
-        return $this->sendResponse(CustomerResource::collection($customers), 'Posts fetched.');
+        return $this->sendResponse(CustomerResource::collection($customers), 'Customers fetched.');
     }
 
     /**
