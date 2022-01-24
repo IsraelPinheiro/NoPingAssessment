@@ -84,8 +84,8 @@ class CustomerController extends BaseController{
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Customer $customer)
-    {
-        //
+    public function destroy(Customer $customer){
+        $customer->delete();
+        return $this->sendResponse([], 'Customer deleted.');
     }
 }
