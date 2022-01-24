@@ -17,8 +17,6 @@ class CreateSuppliersTable extends Migration{
             $table->string('email')->unique();
             $table->timestamps();   //created_at and updated_at
             $table->softDeletes();  //deleted_at
-            $table->bigInteger('created_by')->unsigned();
-            $table->bigInteger('updated_by')->unsigned()->nullable()->default(null);
         });
     }
 

@@ -20,8 +20,6 @@ class CreateCustomersTable extends Migration{
             $table->date('last_purchase')->nullable()->default(null);
             $table->timestamps();   //created_at and updated_at
             $table->softDeletes();  //deleted_at
-            $table->bigInteger('created_by')->unsigned();
-            $table->bigInteger('updated_by')->unsigned()->nullable()->default(null);
         });
     }
 

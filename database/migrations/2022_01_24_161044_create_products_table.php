@@ -22,8 +22,6 @@ class CreateProductsTable extends Migration{
                 $table->decimal('price', 8, 2)->unsigned()->default(0);
                 $table->timestamps();   //created_at and updated_at
                 $table->softDeletes();  //deleted_at
-                $table->bigInteger('created_by')->unsigned();
-                $table->bigInteger('updated_by')->unsigned()->nullable()->default(null);
             });
         });
     }
