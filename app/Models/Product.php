@@ -14,4 +14,9 @@ class Product extends Model{
     public function supplier(){
         return $this->belongsTo(Supplier::class);
     }
+
+    //Sales where this product was part of
+    public function sales(){
+        return $this->belongsToMany(Sale::class)->withPivot('sell_price', 'sold_amount');
+    }
 }
