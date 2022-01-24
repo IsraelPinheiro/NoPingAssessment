@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Models\Sale;
 use Illuminate\Http\Request;
 
-class SaleController extends Controller
-{
+class SaleController extends BaseController{
     /**
      * Display a listing of the resource.
      *
