@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Resources\Product as ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends BaseController{
     /**
@@ -24,7 +25,26 @@ class ProductController extends BaseController{
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        //
+        $validator = Validator::make($request, [
+            'name' => ['required','string','min:5','unique:products,name'],
+            'sku' => ['required','string','min:5','unique:products,sku'],
+            'description' => ['nullable','string'],
+            'in_stock' => ['nullable','numeric', 'gte:0'],
+            'supplier_id' => ['required','numeric', 'gt:0'],
+            'price' => ['nullable','numeric', 'gte:0'],
+        ]);
+        if($validator->fails()){
+            return $this->sendError($validator->errors());       
+        }
+        $product = new Product();
+        $product->name = $request->name;
+        $product->sku = $request->sku;
+        $product->description = $request->description;
+        $product->in_stock = $request->in_stock ? $request->in_stock : 0;
+        $product->supplier_id = $request->supplier_id;
+        $product->price = $request->price ? $request->price : 0;
+        $product->save();
+        return $this->sendResponse(new ProductResource($product), 'Product created.');
     }
 
     /**
