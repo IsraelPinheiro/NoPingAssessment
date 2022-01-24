@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Resources\Product as ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -11,9 +12,9 @@ class ProductController extends BaseController{
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index(){
+        $products = Product::all();
+        return $this->sendResponse(ProductResource::collection($products), 'Products fetched.');
     }
 
     /**
@@ -22,8 +23,7 @@ class ProductController extends BaseController{
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         //
     }
 
