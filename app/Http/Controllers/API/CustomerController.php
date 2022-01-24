@@ -49,9 +49,8 @@ class CustomerController extends BaseController{
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function show(Customer $customer)
-    {
-        //
+    public function show(Customer $customer){
+        return $this->sendResponse(new CustomerResource($customer), 'Customer fetched.');
     }
 
     /**
