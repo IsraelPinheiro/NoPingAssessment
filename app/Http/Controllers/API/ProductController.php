@@ -25,7 +25,7 @@ class ProductController extends BaseController{
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        $validator = Validator::make($request, [
+        $validator = Validator::make($request->all(), [
             'name' => ['required','string','min:5'],
             'sku' => ['required','string','min:5','unique:products,sku'],
             'description' => ['nullable','string'],
@@ -65,7 +65,7 @@ class ProductController extends BaseController{
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Product $product){
-        $validator = Validator::make($request, [
+        $validator = Validator::make($request->all(), [
             'name' => ['required','string','min:5'],
             'sku' => ['required','string','min:5','unique:products,sku,'.$product->id],
             'description' => ['nullable','string'],
