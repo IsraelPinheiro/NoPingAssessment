@@ -76,8 +76,8 @@ class SupplierController extends BaseController{
      * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Supplier $supplier)
-    {
-        //
+    public function destroy(Supplier $supplier){
+        $supplier->delete();
+        return $this->sendResponse([], 'Supplier deleted.');
     }
 }
