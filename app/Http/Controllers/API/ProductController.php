@@ -66,19 +66,19 @@ class ProductController extends BaseController{
      */
     public function update(Request $request, Product $product){
         $validator = Validator::make($request->all(), [
-            'name' => ['required','string','min:5'],
-            'sku' => ['required','string','min:5','unique:products,sku,'.$product->id],
-            'description' => ['nullable','string'],
-            'in_stock' => ['nullable','numeric', 'gte:0'],
-            'supplier_id' => ['nullable','numeric', 'gt:0'],
-            'price' => ['nullable','numeric', 'gte:0'],
+            'name' => ['sometimes','required','string','min:5'],
+            'sku' => ['sometimes','required','string','min:5','unique:products,sku,'.$product->id],
+            'description' => ['sometimes','nullable','string'],
+            'in_stock' => ['sometimes','nullable','numeric', 'gte:0'],
+            'supplier_id' => ['sometimes','nullable','numeric', 'gt:0'],
+            'price' => ['sometimes','nullable','numeric', 'gte:0'],
         ]);
         if($validator->fails()){
             return $this->sendError($validator->errors());       
         }
-        $product->name = $request->name;
-        $product->sku = $request->sku;
-        $product->description = $request->description;
+        $product->name = $request->name ? $request->name : $product->name;
+        $product->sku = $request->sku ? $request->sku : $product->sku;
+        $product->description = $request->description ? $request->description : $product->description;
         $product->in_stock = $request->in_stock ? $request->in_stock : $product->in_stock;
         $product->supplier_id = $request->supplier_id ? $request->supplier_id : $product->supplier_id;
         $product->price = $request->price ? $request->price : $product->price;
