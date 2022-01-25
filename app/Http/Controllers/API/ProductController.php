@@ -83,7 +83,7 @@ class ProductController extends BaseController{
         $product->supplier_id = $request->supplier_id ? $request->supplier_id : $product->supplier_id;
         $product->price = $request->price ? $request->price : $product->price;
         $product->save();
-        return $this->sendResponse(new ProductResource($product), 'Product created.');
+        return $this->sendResponse(new ProductResource($product), 'Product updated.');
     }
 
     /**
