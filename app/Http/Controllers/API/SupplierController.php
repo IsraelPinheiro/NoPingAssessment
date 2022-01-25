@@ -27,7 +27,7 @@ class SupplierController extends BaseController{
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
             'name' => ['required','string','min:5','unique:suppliers,name'],
-            'email' => ['required','string','min:5','unique:suppliers,email']
+            'email' => ['required','email','min:5','unique:suppliers,email']
         ]);
         if($validator->fails()){
             return $this->sendError($validator->errors());       
@@ -45,9 +45,8 @@ class SupplierController extends BaseController{
      * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function show(Supplier $supplier)
-    {
-        //
+    public function show(Supplier $supplier){
+        return $this->sendResponse(new SupplierResource($supplier), 'Supplier fetched.');
     }
 
     /**
