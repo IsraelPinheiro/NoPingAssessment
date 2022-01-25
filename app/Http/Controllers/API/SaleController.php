@@ -43,9 +43,8 @@ class SaleController extends BaseController{
      * @param  \App\Models\Sale  $sale
      * @return \Illuminate\Http\Response
      */
-    public function show(Sale $sale)
-    {
-        //
+    public function show(Sale $sale){
+        return $this->sendResponse(new SaleResource($sale), 'Sale fetched.');
     }
 
     /**
