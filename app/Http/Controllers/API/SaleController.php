@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Resources\Sale as SaleResource;
 use App\Models\Sale;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SaleController extends BaseController{
     /**
@@ -23,9 +24,17 @@ class SaleController extends BaseController{
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request){
+        $validator = Validator::make($request->all(), [
+            'supplier_id' => ['required','numeric', 'gt:0']
+        ]);
+        if($validator->fails()){
+            return $this->sendError($validator->errors());       
+        }
+        $sale = new Sale();
+        $sale->customer_id = $request->customer_id;
+        $sale->save();
+        return $this->sendResponse(new SaleResource($sale), 'Sale created.');
     }
 
     /**
