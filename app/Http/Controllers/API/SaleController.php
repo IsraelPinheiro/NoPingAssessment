@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Resources\Sale as SaleResource;
 use App\Models\Sale;
 use Illuminate\Http\Request;
 
@@ -11,9 +12,9 @@ class SaleController extends BaseController{
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index(){
+        $sales = Sale::all();
+        return $this->sendResponse(SaleResource::collection($sales), 'Sales fetched.');
     }
 
     /**
