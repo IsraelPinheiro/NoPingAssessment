@@ -23,15 +23,13 @@ class SaleSeeder extends Seeder{
             'sale_id' => 1,
             'product_id' => 4,
             'sell_price' => 499.00,
-            'sold_amount' => 100,
-            'created_at' => '2020-11-12 11:59:00'
+            'sold_amount' => 100
         ]);
         DB::table('product_sale')->insert([
             'sale_id' => 1,
             'product_id' => 5,
             'sell_price' => 399.00,
-            'sold_amount' => 100,
-            'created_at' => '2020-11-12 11:59:00'
+            'sold_amount' => 100
         ]);
 
         $this->command->info('Sales Created');
