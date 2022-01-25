@@ -62,18 +62,18 @@ class CustomerController extends BaseController{
      */
     public function update(Request $request, Customer $customer){
         $validator = Validator::make($request->all(), [
-            'name' => ['required','string','min:5','unique:customers,name,'.$customer->id],
-            'email' => ['nullable','email','unique:customers,email,'.$customer->id],
-            'phone' => ['nullable','numeric','digits_between:10,11'],
-            'birthday' => ['nullable','date'],
+            'name' => ['sometimes','required','string','min:5','unique:customers,name,'.$customer->id],
+            'email' => ['sometimes','nullable','email','unique:customers,email,'.$customer->id],
+            'phone' => ['sometimes','nullable','numeric','digits_between:10,11'],
+            'birthday' => ['sometimes','nullable','date'],
         ]);
         if($validator->fails()){
             return $this->sendError($validator->errors());       
         }
-        $customer->name = $request->name;
-        $customer->email = $request->email;
-        $customer->phone = $request->phone;
-        $customer->birthday = $request->birthday;
+        $customer->name = $request->name ? $request->name : $customer->name;
+        $customer->email = $request->email ? $request->email : $customer->email;
+        $customer->phone = $request->phone ? $request->phone : $customer->phone;
+        $customer->birthday = $request->birthday ? $request->birthday : $customer->birthday;
         $customer->save();
         return $this->sendResponse(new CustomerResource($customer), 'Customer updated.');
     }
