@@ -56,9 +56,18 @@ class SupplierController extends BaseController{
      * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Supplier $supplier)
-    {
-        //
+    public function update(Request $request, Supplier $supplier){
+        $validator = Validator::make($request->all(), [
+            'name' => ['sometimes','required','string','min:5','unique:suppliers,name,'.$supplier->id],
+            'email' => ['sometimes','required','email','min:5','unique:suppliers,email,'.$supplier->id]
+        ]);
+        if($validator->fails()){
+            return $this->sendError($validator->errors());       
+        }
+        $supplier->name = $request->name ? $request->name : $supplier->name;
+        $supplier->email = $request->email ? $request->email : $supplier->email;
+        $supplier->save();
+        return $this->sendResponse(new SupplierResource($supplier), 'Supplier updated.');
     }
 
     /**
