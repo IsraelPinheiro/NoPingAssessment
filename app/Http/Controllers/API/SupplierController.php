@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Resources\Supplier as SupplierResource;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SupplierController extends BaseController{
     /**
@@ -23,9 +24,19 @@ class SupplierController extends BaseController{
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request){
+        $validator = Validator::make($request->all(), [
+            'name' => ['required','string','min:5','unique:suppliers,name'],
+            'email' => ['required','string','min:5','unique:suppliers,email']
+        ]);
+        if($validator->fails()){
+            return $this->sendError($validator->errors());       
+        }
+        $supplier = new Supplier();
+        $supplier->name = $request->name;
+        $supplier->email = $request->email;
+        $supplier->save();
+        return $this->sendResponse(new SupplierResource($supplier), 'Supplier created.');
     }
 
     /**
