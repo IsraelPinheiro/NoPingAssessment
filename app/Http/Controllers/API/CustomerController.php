@@ -27,7 +27,7 @@ class CustomerController extends BaseController{
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
             'name' => ['required','string','min:5','unique:customers,name'],
-            'email' => ['nulable','email','unique:customers,email'],
+            'email' => ['nullable','email','unique:customers,email'],
             'phone' => ['nullable','numeric','digits_between:10,11'],
             'birthday' => ['nullable','date'],
         ]);
@@ -63,7 +63,7 @@ class CustomerController extends BaseController{
     public function update(Request $request, Customer $customer){
         $validator = Validator::make($request->all(), [
             'name' => ['required','string','min:5','unique:customers,name,'.$customer->id],
-            'email' => ['nulable','email','unique:customers,email,'.$customer->id],
+            'email' => ['nullable','email','unique:customers,email,'.$customer->id],
             'phone' => ['nullable','numeric','digits_between:10,11'],
             'birthday' => ['nullable','date'],
         ]);
