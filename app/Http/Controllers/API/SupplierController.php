@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Resources\Supplier as SupplierResource;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 
@@ -11,9 +12,9 @@ class SupplierController extends BaseController{
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index(){
+        $supliers = Supplier::all();
+        return $this->sendResponse(SupplierResource::collection($supliers), 'Supliers fetched.');
     }
 
     /**
