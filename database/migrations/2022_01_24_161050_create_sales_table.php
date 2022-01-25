@@ -14,6 +14,7 @@ class CreateSalesTable extends Migration{
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('customer_id')->unsigned();
+            $table->boolean('closed')->default(false);
             $table->timestamps();   //created_at and updated_at
             $table->softDeletes();  //deleted_at
         });
