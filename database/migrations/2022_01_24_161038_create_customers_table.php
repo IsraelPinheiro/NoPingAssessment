@@ -17,7 +17,7 @@ class CreateCustomersTable extends Migration{
             $table->string('email')->unique()->nullable()->default(null);
             $table->string('phone',11)->unique()->nullable()->default(null);
             $table->date('birthday')->nullable()->default(null);
-            $table->date('last_purchase')->nullable()->default(null);
+            $table->datetime('last_purchase')->nullable()->default(null);
             $table->timestamps();   //created_at and updated_at
             $table->softDeletes();  //deleted_at
         });
