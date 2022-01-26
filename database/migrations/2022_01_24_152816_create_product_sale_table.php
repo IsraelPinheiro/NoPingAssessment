@@ -15,7 +15,7 @@ class CreateProductSaleTable extends Migration{
             $table->id();
             $table->bigInteger('product_id')->unsigned();
             $table->decimal('sell_price', 8, 2)->unsigned()->default(0);
-            $table->integer('sold_amount')->unsigned()->default(0);
+            $table->integer('units')->unsigned()->default(0);
             $table->bigInteger('sale_id')->unsigned();
             $table->softDeletes();  //deleted_at
         });
