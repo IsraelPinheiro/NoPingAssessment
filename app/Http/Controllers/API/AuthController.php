@@ -27,27 +27,4 @@ class AuthController extends BaseController{
             return $this->sendError('Unauthorised.', ['error'=>'Unauthorised'], 401);
         } 
     }
-
-    /**
-     * Create a new user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function signup(Request $request){
-        $validator = Validator::make($request->all(), [
-            'name' => ['required','string','min:5'],
-            'email' => ['required','email','min:5','unique:users,email'],
-            'password' => ['required','string','min:6', 'confirmed']
-        ]);
-        if($validator->fails()){
-            return $this->sendError('Error validation', $validator->errors());       
-        }
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
-        $success['token'] =  $user->createToken('MyAuthApp')->plainTextToken;
-        $success['name'] =  $user->name;
-        return $this->sendResponse($success, 'User created successfully.');
-    }
 }

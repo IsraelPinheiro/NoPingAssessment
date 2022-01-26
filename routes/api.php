@@ -40,7 +40,7 @@ Route::name('api.')->group(function(){
         Route::get('suppliers/{supplier}/products', [SupplierController::class,'getProducts']);
         Route::resource('suppliers', SupplierController::class);
         //Users
-        Route::post('register', [AuthController::class, 'signup']);
+        Route::post('register', [UserController::class, 'store']);
         Route::resource('users', UserController::class);
     });
 });
