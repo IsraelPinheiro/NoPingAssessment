@@ -34,7 +34,7 @@ class UserController extends BaseController{
      * @return \Illuminate\Http\Response
      */
     public function show(User $user){
-
+        return $this->sendResponse(new UserResource($user), 'User fetched.');
     }
 
     /**
