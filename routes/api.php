@@ -20,6 +20,9 @@ use Illuminate\Support\Facades\Route;
 Route::name('api.')->group(function () {
     Route::resource('customers', CustomerController::class);
     Route::resource('products', ProductController::class);
+    Route::post('sales/{sale}/products', [SaleController::class,'addProduct']);
+    Route::delete('sales/{sale}/products', [SaleController::class,'removeProduct']);
+    Route::post('sales/{sale}/close', [SaleController::class,'closeSale']);
     Route::resource('sales', SaleController::class);
     Route::resource('suppliers', SupplierController::class);
 });
