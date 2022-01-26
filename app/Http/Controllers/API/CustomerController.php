@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Resources\Customer as CustomerResource;
+use App\Http\Resources\Sale as SaleResource;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -51,6 +52,16 @@ class CustomerController extends BaseController{
      */
     public function show(Customer $customer){
         return $this->sendResponse(new CustomerResource($customer), 'Customer fetched.');
+    }
+
+    /**
+     * Return the Purchases made by the specified Customer.
+     *
+     * @param  \App\Models\Customer  $customer
+     * @return \Illuminate\Http\Response
+     */
+    public function getPurchases(Customer $customer){
+        return $this->sendResponse(SaleResource::collection($customer->purchases), 'Purchases fetched.');
     }
 
     /**

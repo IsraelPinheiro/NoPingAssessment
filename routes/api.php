@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::name('api.')->group(function () {
     //Customers
+    Route::get('customers/{customer}/purchases', [CustomerController::class,'getPurchases']);
     Route::resource('customers', CustomerController::class);
     //Products
     Route::get('products/{product}/supplier', [ProductController::class,'getSupplier']);
