@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Resources\Product as ProductResource;
 use App\Models\Product;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -35,6 +36,9 @@ class ProductController extends BaseController{
         ]);
         if($validator->fails()){
             return $this->sendError($validator->errors());       
+        }
+        if(!Supplier::find($request->supplier_id)){
+            return $this->sendError([],'Supplier not found');
         }
         $product = new Product();
         $product->name = $request->name;
@@ -75,6 +79,9 @@ class ProductController extends BaseController{
         ]);
         if($validator->fails()){
             return $this->sendError($validator->errors());       
+        }
+        if(!Supplier::find($request->supplier_id)){
+            return $this->sendError([],'Supplier not found');
         }
         $product->name = $request->name ? $request->name : $product->name;
         $product->sku = $request->sku ? $request->sku : $product->sku;
