@@ -28,7 +28,7 @@ class UserController extends BaseController{
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
             'name' => ['required','string','min:5'],
-            'email' => ['required','email','min:5','unique:users,email'],
+            'email' => ['required','email','unique:users,email'],
             'password' => ['required','string','min:6', 'confirmed','regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/']
         ]);
         if($validator->fails()){
@@ -62,7 +62,7 @@ class UserController extends BaseController{
     public function update(Request $request, User $user){
         $validator = Validator::make($request->all(), [
             'name' => ['sometimes','required','string','min:5'],
-            'email' => ['sometimes','required','email','min:5','unique:users,email,'.$user->id],
+            'email' => ['sometimes','required','email','unique:users,email,'.$user->id],
             'password' => ['sometimes','required','string','min:6','confirmed','regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/']
         ]);
         if($validator->fails()){
