@@ -21,6 +21,7 @@ Route::name('api.')->group(function () {
     //Customers
     Route::resource('customers', CustomerController::class);
     //Products
+    Route::get('products/{product}/supplier', [ProductController::class,'getSupplier']);
     Route::resource('products', ProductController::class);
     //Sales
     Route::get('sales/{sale}/products', [SaleController::class,'getProducts']);
