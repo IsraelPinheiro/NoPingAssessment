@@ -79,8 +79,8 @@ class SaleController extends BaseController{
      * @param  \App\Models\Sale  $sale
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Sale $sale)
-    {
-        //
+    public function destroy(Sale $sale){
+        $sale->delete();
+        return $this->sendResponse([], 'Sale deleted.');
     }
 }
