@@ -30,11 +30,15 @@ Route::name('api.')->group(function(){
         Route::get('products/{product}/supplier', [ProductController::class,'getSupplier'])->name('products.supplier');
         Route::resource('products', ProductController::class)->except(['create','edit']);
         //Sales
-        Route::get('sales/{sale}/customer', [SaleController::class,'getCustomer'])->name('sales.customer');
-        Route::get('sales/{sale}/products', [SaleController::class,'getProducts'])->name('sales.products.list');
-        Route::post('sales/{sale}/products', [SaleController::class,'addProduct'])->name('sales.products.add');
-        Route::delete('sales/{sale}/products', [SaleController::class,'removeProduct'])->name('sales.products.remove');
-        Route::post('sales/{sale}/close', [SaleController::class,'closeSale'])->name('sales.close');
+        Route::name('sales.')->group(function(){
+            Route::get('sales/{sale}/customer', [SaleController::class,'getCustomer'])->name('customer');
+            Route::name('products.')->group(function(){
+                Route::get('sales/{sale}/products', [SaleController::class,'getProducts'])->name('list');
+                Route::post('sales/{sale}/products', [SaleController::class,'addProduct'])->name('add');
+                Route::delete('sales/{sale}/products', [SaleController::class,'removeProduct'])->name('remove');
+            });
+            Route::post('sales/{sale}/close', [SaleController::class,'closeSale'])->name('close');
+        });
         Route::resource('sales', SaleController::class)->except(['create','edit']);
         //Supplisers
         Route::get('suppliers/{supplier}/products', [SupplierController::class,'getProducts'])->name('suppliers.products.list');
