@@ -59,18 +59,23 @@ class SaleController extends BaseController{
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Sale $sale){
-        $validator = Validator::make($request->all(), [
-            'customer_id' => ['required','numeric', 'gt:0']
-        ]);
-        if($validator->fails()){
-            return $this->sendError($validator->errors());       
+        if(!$sale->closed){
+            $validator = Validator::make($request->all(), [
+                'customer_id' => ['required','numeric', 'gt:0']
+            ]);
+            if($validator->fails()){
+                return $this->sendError($validator->errors());       
+            }
+            if(!Customer::find($request->customer_id)){
+                return $this->sendError([],'Customer not found');
+            }
+            $sale->customer_id = $request->customer_id;
+            $sale->save();
+            return $this->sendResponse(new SaleResource($sale), 'Sale updated.');
         }
-        if(!Customer::find($request->customer_id)){
-            return $this->sendError([],'Customer not found');
+        else{
+            return $this->sendError([], 'Sale closed.', 403);
         }
-        $sale->customer_id = $request->customer_id;
-        $sale->save();
-        return $this->sendResponse(new SaleResource($sale), 'Sale updated.');
     }
 
     /**
