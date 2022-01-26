@@ -24,6 +24,7 @@ Route::name('api.')->group(function () {
     Route::get('products/{product}/supplier', [ProductController::class,'getSupplier']);
     Route::resource('products', ProductController::class);
     //Sales
+    Route::get('sales/{sale}/customer', [SaleController::class,'getCustomer']);
     Route::get('sales/{sale}/products', [SaleController::class,'getProducts']);
     Route::post('sales/{sale}/products', [SaleController::class,'addProduct']);
     Route::delete('sales/{sale}/products', [SaleController::class,'removeProduct']);

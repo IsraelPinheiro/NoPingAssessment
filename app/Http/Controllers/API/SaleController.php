@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Resources\Customer as CustomerResource;
 use App\Http\Resources\Sale as SaleResource;
 use App\Models\Customer;
 use App\Models\Product;
@@ -77,6 +78,15 @@ class SaleController extends BaseController{
         else{
             return $this->sendError([], 'Sale is closed.', 403);
         }
+    }
+
+    /**
+     * Return the Sale's Customer
+     *
+     * @param  \App\Models\Sale  $sale
+     */
+    public function getCustomer(Sale $sale){
+        return $this->sendResponse(new CustomerResource($sale->customer), 'Customer fetched.');
     }
 
     /**
