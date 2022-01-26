@@ -9,6 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Sale extends Model{
     use HasFactory, SoftDeletes;
 
+    protected $casts = [
+        'closed' => 'boolean',
+    ];
+
     //Relationships
     //Sales' Customer
     public function customer(){
