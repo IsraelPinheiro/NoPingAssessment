@@ -69,6 +69,12 @@ class UserController extends BaseController{
      * @return \Illuminate\Http\Response
      */
     public function destroy(User $user){
-
+        if($user->id != request()->user()->id){
+            $user->delete();
+            return $this->sendResponse([], 'User deleted.');
+        }
+        else{
+            return $this->sendError([],"User can't delete itself.", 401);
+        }
     }
 }
