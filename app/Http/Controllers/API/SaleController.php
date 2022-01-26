@@ -74,7 +74,7 @@ class SaleController extends BaseController{
             return $this->sendResponse(new SaleResource($sale), 'Sale updated.');
         }
         else{
-            return $this->sendError([], 'Sale closed.', 403);
+            return $this->sendError([], 'Sale is closed.', 403);
         }
     }
 
