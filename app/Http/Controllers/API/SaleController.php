@@ -82,6 +82,17 @@ class SaleController extends BaseController{
     /**
      * Add a product to the specified Sale
      *
+     * @param  \App\Models\Sale  $sale
+     * @return \Illuminate\Http\Response
+     */
+    public function getProducts(Sale $sale){
+        $products = $sale->products()->withPivot([])->get();
+        return $this->sendResponse($products, 'Products fetched.');
+    }
+
+    /**
+     * Add a product to the specified Sale
+     *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Sale  $sale
      * @return \Illuminate\Http\Response
@@ -125,8 +136,6 @@ class SaleController extends BaseController{
             return $this->sendError([], 'Sale is closed.', 403);
         }
     }
-    
-
 
     /**
      * Closes the specified Sale
