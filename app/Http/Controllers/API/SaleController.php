@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Resources\Customer as CustomerResource;
 use App\Http\Resources\Sale as SaleResource;
+use App\Http\Resources\Product as ProductResource;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Sale;
@@ -90,14 +91,13 @@ class SaleController extends BaseController{
     }
 
     /**
-     * Add a product to the specified Sale
+     * Return the products present in a specific Sale
      *
      * @param  \App\Models\Sale  $sale
-     * @return \Illuminate\Http\Response
      */
     public function getProducts(Sale $sale){
         $products = $sale->products()->withPivot([])->get();
-        return $this->sendResponse($products, 'Products fetched.');
+        return $this->sendResponse(ProductResource::collection($products), 'Products fetched.');
     }
 
     /**
