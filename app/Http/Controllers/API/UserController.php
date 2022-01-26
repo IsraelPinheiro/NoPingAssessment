@@ -29,7 +29,7 @@ class UserController extends BaseController{
         $validator = Validator::make($request->all(), [
             'name' => ['required','string','min:5'],
             'email' => ['required','email','min:5','unique:users,email'],
-            'password' => ['required','string','min:6', 'confirmed']
+            'password' => ['required','string','min:6', 'confirmed','regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/']
         ]);
         if($validator->fails()){
             return $this->sendError('Error validation', $validator->errors());       
