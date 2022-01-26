@@ -18,9 +18,18 @@ class AuthController extends BaseController{
      */
     public function signin(Request $request){
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
+            $validator = Validator::make($request->all(), [
+                'email' => ['required','email'],
+                'password' => ['required','string'],
+                'token_name' => ['sometimes','required','string']
+            ]);
+            if($validator->fails()){
+                return $this->sendError('Error validation', $validator->errors());       
+            }
             $user = Auth::user(); 
-            $success['token'] =  $user->createToken('MyAuthApp')->plainTextToken; 
             $success['name'] =  $user->name;
+            $success['token_name'] = $request->token_name ? $request->token_name : "app_token";
+            $success['token'] =  $user->createToken($success['token_name'])->plainTextToken; 
             return $this->sendResponse($success, 'User signed in');
         } 
         else{ 
