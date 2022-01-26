@@ -103,6 +103,11 @@ class SaleController extends BaseController{
                 if($product->in_stock < $request->units){
                     return $this->sendError(['remaining_units'=>$product->in_stock], 'Not enough units in stock.', 422);
                 }
+                //Check if product is already present on the sale
+                if($sale->products->contains($request->product_id)){
+                    return $this->sendError(['remaining_units'=>$product->in_stock], 'Product already present on the sale, remove it first.', 422);
+                }
+                //Insert the product
                 $sale->products()->attach($request->product_id,[
                     'sell_price'=>$product->price,
                     'units'=>$request->units
@@ -117,6 +122,8 @@ class SaleController extends BaseController{
             return $this->sendError([], 'Sale is closed.', 403);
         }
     }
+    
+
 
     /**
      * Closes the specified Sale
