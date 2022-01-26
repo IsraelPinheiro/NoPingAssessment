@@ -33,7 +33,7 @@ class SaleController extends BaseController{
             return $this->sendError($validator->errors());       
         }
         if(!Customer::find($request->customer_id)){
-            $this->sendError([],'Customer not found');
+            return $this->sendError([],'Customer not found');
         }
         $sale = new Sale();
         $sale->customer_id = $request->customer_id;
@@ -66,9 +66,8 @@ class SaleController extends BaseController{
             return $this->sendError($validator->errors());       
         }
         if(!Customer::find($request->customer_id)){
-            $this->sendError([],'Customer not found');
+            return $this->sendError([],'Customer not found');
         }
-
         $sale->customer_id = $request->customer_id;
         $sale->save();
         return $this->sendResponse(new SaleResource($sale), 'Sale updated.');
