@@ -32,6 +32,9 @@ class SaleController extends BaseController{
         if($validator->fails()){
             return $this->sendError($validator->errors());       
         }
+        if(!Customer::find($request->customer_id)){
+            $this->sendError([],'Customer not found');
+        }
         $sale = new Sale();
         $sale->customer_id = $request->customer_id;
         $sale->save();
