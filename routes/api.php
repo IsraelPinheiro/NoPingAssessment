@@ -5,6 +5,7 @@ use App\Http\Controllers\API\CustomerController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\SaleController;
 use App\Http\Controllers\API\SupplierController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,5 +39,8 @@ Route::name('api.')->group(function(){
         //Supplisers
         Route::get('suppliers/{supplier}/products', [SupplierController::class,'getProducts']);
         Route::resource('suppliers', SupplierController::class);
+        //Users
+        Route::post('register', [AuthController::class, 'signup']);
+        Route::resource('users', UserController::class);
     });
 });
