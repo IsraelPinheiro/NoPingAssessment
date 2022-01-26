@@ -138,6 +138,39 @@ class SaleController extends BaseController{
     }
 
     /**
+     * Remove a product from the specified Sale
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Sale  $sale
+     * @return \Illuminate\Http\Response
+     */
+    public function removeProduct(Request $request, Sale $sale){
+        $validator = Validator::make($request->all(), [
+            'product_id' => ['required','numeric', 'gt:0'],
+        ]);
+        if($validator->fails()){
+            return $this->sendError($validator->errors());       
+        }
+        //Check if the sale is not closed
+        if(!$sale->closed){
+            //Check if the product is present on the sale
+            if($sale->products->contains($request->product_id)){
+                $product = Product::find($request->product_id);
+                $product->in_stock = $product->in_stock+$sale->products->find($product->id)->pivot->units;
+                $product->save();
+                $sale->products()->detach($request->product_id);
+            }
+            else{
+                return $this->sendError([], 'Product not present on this sale.', 404);
+            }
+            return $this->sendResponse($sale->products, 'Product removed from the sale.');
+        }
+        else{
+            return $this->sendError([], 'Sale is closed.', 403);
+        }
+    }
+
+    /**
      * Closes the specified Sale
      *
      * @param  \App\Models\Sale  $sale
