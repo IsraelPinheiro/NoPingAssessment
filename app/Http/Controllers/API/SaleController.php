@@ -112,6 +112,9 @@ class SaleController extends BaseController{
                     'sell_price'=>$product->price,
                     'units'=>$request->units
                 ]);
+                //Remove the units from the product's stock
+                $product->in_stock = $product->in_stock-$request->units;
+                $product->save();
             }
             else{
                 return $this->sendError([],'Product not found');
