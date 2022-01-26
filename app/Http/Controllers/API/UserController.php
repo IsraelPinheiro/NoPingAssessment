@@ -59,6 +59,15 @@ class UserController extends BaseController{
     }
 
     /**
+     * List the User's tokens.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function getTokens(User $user){
+        return $this->sendResponse($user->tokens, 'Tokens fetched.');
+    }
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

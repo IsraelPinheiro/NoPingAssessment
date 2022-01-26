@@ -41,6 +41,7 @@ Route::name('api.')->group(function(){
         Route::resource('suppliers', SupplierController::class);
         //Users
         Route::post('register', [UserController::class, 'store']);
+        Route::get('users/{user}/tokens', [UserController::class, 'getTokens']);
         Route::resource('users', UserController::class);
     });
 });
