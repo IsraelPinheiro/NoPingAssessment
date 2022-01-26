@@ -123,14 +123,15 @@ class SaleController extends BaseController{
                     'sell_price'=>$product->price,
                     'units'=>$request->units
                 ]);
+                $sale->load('products');
                 //Remove the units from the product's stock
                 $product->in_stock = $product->in_stock-$request->units;
                 $product->save();
+                return $this->sendResponse($sale->products, 'Product added to the sale.');
             }
             else{
                 return $this->sendError([],'Product not found');
-            }
-            return $this->sendResponse($sale->products, 'Product added to the sale.');
+            }  
         }
         else{
             return $this->sendError([], 'Sale is closed.', 403);
@@ -159,11 +160,12 @@ class SaleController extends BaseController{
                 $product->in_stock = $product->in_stock+$sale->products->find($product->id)->pivot->units;
                 $product->save();
                 $sale->products()->detach($request->product_id);
+                $sale->load('products');
+                return $this->sendResponse($sale->products, 'Product removed from the sale.');
             }
             else{
                 return $this->sendError([], 'Product not present on this sale.', 404);
             }
-            return $this->sendResponse($sale->products, 'Product removed from the sale.');
         }
         else{
             return $this->sendError([], 'Sale is closed.', 403);
