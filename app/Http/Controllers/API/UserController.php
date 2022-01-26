@@ -34,12 +34,12 @@ class UserController extends BaseController{
         if($validator->fails()){
             return $this->sendError('Error validation', $validator->errors());       
         }
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
-        $success['token'] =  $user->createToken('MyAuthApp')->plainTextToken;
-        $success['name'] =  $user->name;
-        return $this->sendResponse($success, 'User created successfully.');
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->save();
+        return $this->sendResponse(new UserResource($user), 'User created.');
     }
 
     /**
