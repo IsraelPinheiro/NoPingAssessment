@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Resources\Sale as SaleResource;
+use App\Models\Customer;
 use App\Models\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -54,9 +55,20 @@ class SaleController extends BaseController{
      * @param  \App\Models\Sale  $sale
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Sale $sale)
-    {
-        //
+    public function update(Request $request, Sale $sale){
+        $validator = Validator::make($request->all(), [
+            'customer_id' => ['required','numeric', 'gt:0']
+        ]);
+        if($validator->fails()){
+            return $this->sendError($validator->errors());       
+        }
+        if(!Customer::find($request->customer_id)){
+            $this->sendError([],'Customer not found');
+        }
+
+        $sale->customer_id = $request->customer_id;
+        $sale->save();
+        return $this->sendResponse(new SaleResource($sale), 'Sale updated.');
     }
 
     /**
