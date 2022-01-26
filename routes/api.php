@@ -18,11 +18,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::name('api.')->group(function () {
+    //Customers
     Route::resource('customers', CustomerController::class);
+    //Products
     Route::resource('products', ProductController::class);
+    //Sales
     Route::post('sales/{sale}/products', [SaleController::class,'addProduct']);
     Route::delete('sales/{sale}/products', [SaleController::class,'removeProduct']);
     Route::post('sales/{sale}/close', [SaleController::class,'closeSale']);
     Route::resource('sales', SaleController::class);
+    //Supplisers
     Route::resource('suppliers', SupplierController::class);
 });
