@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Resources\Sale as SaleResource;
 use App\Models\Customer;
+use App\Models\Product;
 use App\Models\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -72,6 +73,45 @@ class SaleController extends BaseController{
             $sale->customer_id = $request->customer_id;
             $sale->save();
             return $this->sendResponse(new SaleResource($sale), 'Sale updated.');
+        }
+        else{
+            return $this->sendError([], 'Sale is closed.', 403);
+        }
+    }
+
+    /**
+     * Add a product to the specified Sale
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Sale  $sale
+     * @return \Illuminate\Http\Response
+     */
+    public function addProduct(Request $request, Sale $sale){
+        $validator = Validator::make($request->all(), [
+            'product_id' => ['required','numeric', 'gt:0'],
+            'units' => ['required','numeric', 'gt:0']
+        ]);
+        if($validator->fails()){
+            return $this->sendError($validator->errors());       
+        }
+        //Check if the sale is not closed
+        if(!$sale->closed){
+            //Check if the product exists
+            $product = Product::find($request->product_id);
+            if($product){
+                //Checks if there are enough units in stock to make the sale 
+                if($product->in_stock < $request->units){
+                    return $this->sendError(['remaining_units'=>$product->in_stock], 'Not enough units in stock.', 422);
+                }
+                $sale->products()->attach($request->product_id,[
+                    'sell_price'=>$product->price,
+                    'units'=>$request->units
+                ]);
+            }
+            else{
+                return $this->sendError([],'Product not found');
+            }
+            return $this->sendResponse($sale->products, 'Product added to the sale.');
         }
         else{
             return $this->sendError([], 'Sale is closed.', 403);
