@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Resources\Product as ProductResource;
 use App\Http\Resources\Supplier as SupplierResource;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
@@ -68,6 +69,16 @@ class SupplierController extends BaseController{
         $supplier->email = $request->email ? $request->email : $supplier->email;
         $supplier->save();
         return $this->sendResponse(new SupplierResource($supplier), 'Supplier updated.');
+    }
+
+    /**
+     * Return the products supplied by this Supplier.
+     *
+     * @param  \App\Models\Supplier  $supplier
+     * @return \Illuminate\Http\Response
+     */
+    public function getProducts(Supplier $supplier){
+        return $this->sendResponse(ProductResource::collection($supplier->products), 'Products fetched.');
     }
 
     /**
