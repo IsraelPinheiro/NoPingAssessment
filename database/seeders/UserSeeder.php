@@ -20,5 +20,6 @@ class UserSeeder extends Seeder{
 			'email' => 'admin@testmail.com',
             'password' => Hash::make('admin')
         ]);
+        $this->command->info('Users Created');
     }
 }
