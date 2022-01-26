@@ -27,7 +27,7 @@ class SaleController extends BaseController{
      */
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
-            'supplier_id' => ['required','numeric', 'gt:0']
+            'customer_id' => ['required','numeric', 'gt:0']
         ]);
         if($validator->fails()){
             return $this->sendError($validator->errors());       
