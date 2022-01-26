@@ -29,5 +29,6 @@ Route::name('api.')->group(function () {
     Route::post('sales/{sale}/close', [SaleController::class,'closeSale']);
     Route::resource('sales', SaleController::class);
     //Supplisers
+    Route::get('suppliers/{supplier}/products', [SupplierController::class,'getProducts']);
     Route::resource('suppliers', SupplierController::class);
 });
