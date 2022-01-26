@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\User;
+use App\Http\Resources\User as UserResource;
 use Illuminate\Http\Request;
 
 class UserController extends BaseController{
@@ -12,7 +13,8 @@ class UserController extends BaseController{
      * @return \Illuminate\Http\Response
      */
     public function index(){
-
+        $users = User::all();
+        return $this->sendResponse(UserResource::collection($users), 'Users fetched.');
     }
 
     /**
