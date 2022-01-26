@@ -7,6 +7,7 @@ use App\Http\Resources\User as UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends BaseController{
     /**
@@ -29,7 +30,12 @@ class UserController extends BaseController{
         $validator = Validator::make($request->all(), [
             'name' => ['required','string','min:5'],
             'email' => ['required','email','unique:users,email'],
-            'password' => ['required','string','min:6', 'confirmed','regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/']
+            'password' => [
+                'sometimes',
+                'required',
+                'confirmed',
+                Password::min(6)->mixedCase()->letters()->numbers()->symbols()->uncompromised(),
+            ]
         ]);
         if($validator->fails()){
             return $this->sendError('Error validation', $validator->errors());       
@@ -63,7 +69,12 @@ class UserController extends BaseController{
         $validator = Validator::make($request->all(), [
             'name' => ['sometimes','required','string','min:5'],
             'email' => ['sometimes','required','email','unique:users,email,'.$user->id],
-            'password' => ['sometimes','required','string','min:6','confirmed','regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/']
+            'password' => [
+                'sometimes',
+                'required',
+                'confirmed',
+                Password::min(6)->mixedCase()->letters()->numbers()->symbols()->uncompromised(),
+            ]
         ]);
         if($validator->fails()){
             return $this->sendError('Error validation', $validator->errors());       
