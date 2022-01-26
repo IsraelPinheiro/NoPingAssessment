@@ -74,6 +74,26 @@ class SaleController extends BaseController{
     }
 
     /**
+     * Closes the specified Sale
+     *
+     * @param  \App\Models\Sale  $sale
+     * @return \Illuminate\Http\Response
+     */
+    public function closeSale(Sale $sale){
+        if(!$sale->closed){
+            $customer = Customer::find($sale->customer_id);
+            $customer->last_purchase = now();
+            $customer->save();
+            $sale->closed = true;
+            $sale->save();
+            return $this->sendResponse([], 'Sale closed.');
+        }
+        else{
+            return $this->sendError([], 'Sale already closed.', 403);
+        }
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Sale  $sale
