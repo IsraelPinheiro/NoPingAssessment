@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Resources\Product as ProductResource;
+use App\Http\Resources\Supplier as SupplierResource;
 use App\Models\Product;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
@@ -59,6 +60,16 @@ class ProductController extends BaseController{
      */
     public function show(Product $product){
         return $this->sendResponse(new ProductResource($product), 'Product fetched.');
+    }
+
+    /**
+     * Return the Product's Supplier.
+     *
+     * @param  \App\Models\Product  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function getSupplier(Product $product){
+        return $this->sendResponse(new SupplierResource($product->supplier), 'Supplier fetched.');
     }
 
     /**
