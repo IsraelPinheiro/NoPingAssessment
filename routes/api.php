@@ -21,27 +21,31 @@ use Illuminate\Support\Facades\Route;
 
 Route::name('api.')->group(function(){
     //Auth
-    Route::post('login', [AuthController::class, 'signin']);
+    Route::post('login', [AuthController::class, 'signin'])->name('login');
     Route::middleware('auth:sanctum')->group(function(){
         //Customers
-        Route::get('customers/{customer}/purchases', [CustomerController::class,'getPurchases']);
-        Route::resource('customers', CustomerController::class);
+        Route::get('customers/{customer}/purchases', [CustomerController::class,'getPurchases'])->name('customers.purchases');
+        Route::resource('customers', CustomerController::class)->except(['create','edit']);
         //Products
-        Route::get('products/{product}/supplier', [ProductController::class,'getSupplier']);
-        Route::resource('products', ProductController::class);
+        Route::get('products/{product}/supplier', [ProductController::class,'getSupplier'])->name('products.supplier');
+        Route::resource('products', ProductController::class)->except(['create','edit']);
         //Sales
-        Route::get('sales/{sale}/customer', [SaleController::class,'getCustomer']);
-        Route::get('sales/{sale}/products', [SaleController::class,'getProducts']);
-        Route::post('sales/{sale}/products', [SaleController::class,'addProduct']);
-        Route::delete('sales/{sale}/products', [SaleController::class,'removeProduct']);
-        Route::post('sales/{sale}/close', [SaleController::class,'closeSale']);
-        Route::resource('sales', SaleController::class);
+        Route::name('sales.')->group(function(){
+            Route::get('sales/{sale}/customer', [SaleController::class,'getCustomer'])->name('customer');
+            Route::name('products.')->group(function(){
+                Route::get('sales/{sale}/products', [SaleController::class,'getProducts'])->name('list');
+                Route::post('sales/{sale}/products', [SaleController::class,'addProduct'])->name('add');
+                Route::delete('sales/{sale}/products', [SaleController::class,'removeProduct'])->name('remove');
+            });
+            Route::post('sales/{sale}/close', [SaleController::class,'closeSale'])->name('close');
+        });
+        Route::resource('sales', SaleController::class)->except(['create','edit']);
         //Supplisers
-        Route::get('suppliers/{supplier}/products', [SupplierController::class,'getProducts']);
-        Route::resource('suppliers', SupplierController::class);
+        Route::get('suppliers/{supplier}/products', [SupplierController::class,'getProducts'])->name('suppliers.products.list');
+        Route::resource('suppliers', SupplierController::class)->except(['create','edit']);
         //Users
-        Route::post('register', [UserController::class, 'store']);
-        Route::get('users/{user}/tokens', [UserController::class, 'getTokens']);
-        Route::resource('users', UserController::class);
+        Route::post('register', [UserController::class, 'store'])->name('register');
+        Route::get('users/{user}/tokens', [UserController::class, 'getTokens'])->name('users.tokens');
+        Route::resource('users', UserController::class)->except(['create','edit']);
     });
 });
